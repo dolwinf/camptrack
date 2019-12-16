@@ -5,7 +5,7 @@ module.exports = gql`
     _id: ID
     name: String
     email: String
-    pic: String
+    picture: String
   }
 
   type Pin {
