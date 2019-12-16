@@ -7,6 +7,7 @@ const user = {
   picture: "CloudinaryURL"
 };
 
+//If no user, return error
 const authenticated = next => (root, args, ctx, info) => {
   if (!ctx.currentUser) {
     throw new AuthenticationError("You need to be logged in");
@@ -15,6 +16,7 @@ const authenticated = next => (root, args, ctx, info) => {
   return next(root, args, ctx, info);
 };
 
+//Wrap the resolver in a higher order function and return the currently logged in user
 module.exports = {
   Query: {
     me: authenticated((root, args, ctx) => ctx.currentUser)

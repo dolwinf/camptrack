@@ -26,8 +26,8 @@ const theme = createMuiTheme({
 
 function withRoot(Component) {
   function WithRoot(props) {
-    // MuiThemeProvider makes the theme available down the React tree
-    // thanks to React context.
+    // MuiThemeProvider makes the theme available down the React tree due to react context
+
     return (
       <MuiThemeProvider theme={theme}>
         {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
