@@ -4,7 +4,7 @@ import React from "react";
 import { GraphQLClient } from "graphql-request";
 import { withStyles } from "@material-ui/core/styles";
 
-//Google login button
+//Google login button on the browser to get out token ID
 import { GoogleLogin } from "react-google-login";
 // import Typography from "@material-ui/core/Typography";
 
@@ -24,12 +24,14 @@ const Login = ({ classes }) => {
     const idToken = googleUser.getAuthResponse().id_token;
     console.log({ idToken });
 
-    //Instantiate a new GraphQL Client and pass the token as an authorization header
+    //Instantiate a new GraphQL Client and pass the token as an authorization header.
     const client = new GraphQLClient("http://localhost:4000/graphql", {
       headers: { authorization: idToken }
     });
 
-    //Make a request with the Authorization header using the request method and passing it the GQL query
+    //Make a request with the Authorization header using the request method and passing it the GQL query.
+    //This request will be passed on and can be access in the context section of the Apollo server,
+    //which we will then use to verify the idToken/header from the backend
     const data = await client.request(ME_QUERY);
     console.log({ data });
   };

@@ -1,4 +1,5 @@
 const User = require("../models/User");
+//library for server side verification
 const { OAuth2Client } = require("google-auth-library");
 require("dotenv").config();
 
