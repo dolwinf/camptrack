@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useContext } from "react";
+import Context from "../../context";
 
 //Make GQL requests to the server
 import { GraphQLClient } from "graphql-request";
@@ -9,6 +10,7 @@ import { GoogleLogin } from "react-google-login";
 // import Typography from "@material-ui/core/Typography";
 
 const Login = ({ classes }) => {
+  const { dispatch } = useContext(Context);
   const ME_QUERY = `{
     me {
       _id 
@@ -33,7 +35,7 @@ const Login = ({ classes }) => {
     //This request will be passed on and can be access in the context section of the Apollo server,
     //which we will then use to verify the idToken/header from the backend
     const data = await client.request(ME_QUERY);
-    console.log({ data });
+    dispatch({ type: "LOGIN_USER", payload: data.me });
   };
   return (
     <GoogleLogin
