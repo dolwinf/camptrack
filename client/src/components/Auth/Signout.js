@@ -16,6 +16,8 @@ const Signout = ({ classes }) => {
     console.log("Logged out user");
   };
 
+  //Using render props provided by GoogleLogout to use a custom element which is span in this case and own Typography component from
+  //material UI for the Login text on the button istead of using the buttonText prop
   return (
     <GoogleLogout
       onLogoutSuccess={onLogout}
