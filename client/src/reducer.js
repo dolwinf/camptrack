@@ -12,6 +12,13 @@ export default function reducer(state, action) {
         isAuth: action.payload
       };
 
+    case "LOGOUT_USER":
+      return {
+        ...state,
+        isAuth: false,
+        currentUser: null
+      };
+
     default:
       return state;
   }
