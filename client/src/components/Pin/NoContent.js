@@ -1,11 +1,12 @@
 import React from "react";
 import { withStyles } from "@material-ui/core/styles";
-import ExploreIcon from "@material-ui/icons/Explore";
+import LocationSearchingIcon from "@material-ui/icons/LocationSearching";
 import Typography from "@material-ui/core/Typography";
+import PersonPinIcon from "@material-ui/icons/PersonPin";
 
 const NoContent = ({ classes }) => (
   <div className={classes.root}>
-    <ExploreIcon className={classes.icon} />
+    <PersonPinIcon className={classes.icon} />
     <Typography
       component="h2"
       variant="h6"
@@ -13,7 +14,8 @@ const NoContent = ({ classes }) => (
       color="textPrimary"
       gutterBottom
     >
-      We all love camping. Tell us where you camped?
+      We all love camping. Tell us where you camped. Drag through the map and
+      start pointing!
     </Typography>
   </div>
 );
