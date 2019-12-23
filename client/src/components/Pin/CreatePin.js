@@ -38,7 +38,7 @@ const CreatePin = ({ classes }) => {
 
   const handleSubmit = async e => {
     e.preventDefault();
-    const url = await handleImageUpload;
+    const url = await handleImageUpload();
     console.log({ title, image, content, url });
   };
 
