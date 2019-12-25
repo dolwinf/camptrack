@@ -1,6 +1,9 @@
 import React, { useState, useContext } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import axios from "axios";
+import { GraphQLClient } from "graphql-request";
+import { CREATE_PIN_MUTATION } from "../../graphql/mutations";
+
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
@@ -11,10 +14,11 @@ import SaveIcon from "@material-ui/icons/SaveTwoTone";
 import Context from "../../context";
 
 const CreatePin = ({ classes }) => {
-  const { dispatch } = useContext(Context);
+  const { dispatch, state } = useContext(Context);
   const [title, setTitle] = useState("");
   const [image, setImage] = useState("");
   const [content, setContent] = useState("");
+  const [submit, setSubmit] = useState(false);
 
   const handleImageUpload = async () => {
     const data = new FormData();
@@ -28,8 +32,7 @@ const CreatePin = ({ classes }) => {
     return res.data.url;
   };
 
-  const handleDeleteDraft = e => {
-    e.preventDefault();
+  const handleDeleteDraft = () => {
     setTitle("");
     setImage("");
     setContent("");
@@ -37,9 +40,30 @@ const CreatePin = ({ classes }) => {
   };
 
   const handleSubmit = async e => {
+    setSubmit(true);
     e.preventDefault();
+    //get information about the currently authenticated user to pass along the header for the graphql request
+    const idToken = window.gapi.auth2
+      .getAuthInstance()
+      .currentUser.get()
+      .getAuthResponse().id_token;
+    const client = new GraphQLClient("http://localhost:4000/graphql", {
+      headers: { authorization: idToken }
+    });
     const url = await handleImageUpload();
-    console.log({ title, image, content, url });
+    const { latitude, longitude } = state.draft;
+    const variables = {
+      title,
+      image: url,
+      content,
+      latitude,
+      longitude
+    };
+    const data = await client.request(CREATE_PIN_MUTATION, variables);
+    //get returned data back by using the name of the mutation used in the resolver function
+    const { createPin } = data;
+    console.log("Pin created:", { createPin });
+    handleDeleteDraft();
   };
 
   return (
@@ -100,7 +124,7 @@ const CreatePin = ({ classes }) => {
           className={classes.Button}
           variant="contained"
           color="secondary"
-          disabled={!title.trim() || !content.trim() || !image}
+          disabled={!title.trim() || !content.trim() || !image || submit}
           onClick={handleSubmit}
         >
           Submit

@@ -6,8 +6,8 @@ const PinSchema = new mongoose.Schema(
     content: String,
     image: String,
     latitude: Number,
-    longtitude: Number,
-    author: { type: mongoose.Schema.ObjectID, ref: "User" },
+    longitude: Number,
+    author: { type: mongoose.Schema.ObjectId, ref: "User" },
     comments: [
       {
         text: String,
@@ -15,7 +15,7 @@ const PinSchema = new mongoose.Schema(
           type: Date,
           default: Date.now
         },
-        author: { type: mongoose.Schema.ObjectID, ref: "User" }
+        author: { type: mongoose.Schema.ObjectId, ref: "User" }
       }
     ]
   },
