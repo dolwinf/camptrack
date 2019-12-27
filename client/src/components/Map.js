@@ -8,12 +8,20 @@ import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import DeleteIcon from "@material-ui/icons/DeleteTwoTone";
 
+import { GET_PINS_QUERY } from "../graphql/queries";
+import { useClient } from "../client";
+
 const INITIAL_VIEWPORT = {
   latitude: 37.7577,
   longitude: -122.4376,
   zoom: 13
 };
 const Map = ({ classes }) => {
+  const client = useClient();
+  useEffect(() => {
+    getPins();
+  }, []);
+
   const { state, dispatch } = useContext(Context);
   const [viewport, setViewport] = useState(INITIAL_VIEWPORT);
   const [userPosition, setUserPosition] = useState(null);
@@ -22,6 +30,11 @@ const Map = ({ classes }) => {
     getUserPosition();
   }, []);
 
+  const getPins = async () => {
+    const { getPins } = await client.request(GET_PINS_QUERY);
+    dispatch({ type: "GET_PINS", payload: getPins });
+    console.log(getPins);
+  };
   const getUserPosition = () => {
     //check window for geolocation that comes from navigator
     if ("geolocation" in navigator) {
@@ -80,6 +93,16 @@ const Map = ({ classes }) => {
             <PinIcon size={40} color="hotpink" />
           </Marker>
         )}
+
+        {state.pins.map(pin => (
+          <Marker
+            key={pin._id}
+            latitude={pin.latitude}
+            longitude={pin.longitude}
+          >
+            <PinIcon size={40} color="darkblue" />
+          </Marker>
+        ))}
       </ReactMapGL>
       <Blog />
     </div>

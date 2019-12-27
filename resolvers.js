@@ -13,7 +13,13 @@ const authenticated = next => (root, args, ctx, info) => {
 //Wrap the resolver in a higher order function and return the currently logged in user
 module.exports = {
   Query: {
-    me: authenticated((root, args, ctx) => ctx.currentUser)
+    me: authenticated((root, args, ctx) => ctx.currentUser),
+    getPins: async (root, args, ctx) => {
+      const pins = await Pin.find({})
+        .populate("author")
+        .populate("comments.author");
+      return pins;
+    }
   },
 
   Mutation: {

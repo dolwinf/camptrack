@@ -39,6 +39,20 @@ export default function reducer(state, action) {
         draft: null
       };
 
+    case "GET_PINS":
+      return {
+        ...state,
+        pins: action.payload
+      };
+
+    case "CREATE_PIN":
+      //get new pin to show on the map along with previous pins
+      const newPin = action.payload;
+      const prevPins = state.pins.filter(pin => pin._id !== newPin._id);
+      return {
+        ...state,
+        pins: [...prevPins, newPin]
+      };
     default:
       return state;
   }

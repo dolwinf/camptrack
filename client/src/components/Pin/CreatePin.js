@@ -64,6 +64,7 @@ const CreatePin = ({ classes }) => {
     //get returned data back by using the name of the mutation used in the resolver function
     const { createPin } = data;
     console.log("Pin created:", { createPin });
+    dispatch({ type: "CREATE_PIN", payload: createPin });
     handleDeleteDraft();
   };
 
