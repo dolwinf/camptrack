@@ -1,9 +1,15 @@
 import React, { useState, useEffect, useContext } from "react";
 import { withStyles } from "@material-ui/core/styles";
-import ReactMapGL, { NavigationControl, Marker, Popup } from "react-map-gl";
+import ReactMapGL, {
+  NavigationControl,
+  Marker,
+  Popup,
+  GeolocateControl
+} from "react-map-gl";
 import PinIcon from "./PinIcon";
 import Blog from "./Blog";
 import Context from "../context";
+import differenceInMinutes from "date-fns/difference_in_minutes";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import DeleteIcon from "@material-ui/icons/DeleteTwoTone";
@@ -48,6 +54,12 @@ const Map = ({ classes }) => {
     }
   };
 
+  const highlightNewPin = pin => {
+    const checkNewPin =
+      differenceInMinutes(Date.now(), Number(pin.createdAt)) <= 30;
+    return checkNewPin ? "limegreen" : "darkblue";
+  };
+
   const handleMapClick = ({ lngLat, leftButton }) => {
     if (!leftButton) return;
     if (!state.draft) {
@@ -70,6 +82,12 @@ const Map = ({ classes }) => {
         {...viewport}
         onClick={handleMapClick}
       >
+        <div className={classes.navigationControl}>
+          <GeolocateControl
+            onViewportChange={getUserPosition}
+            positionOptions={{ enableHighAccuracy: true }}
+          />
+        </div>
         {/* Navigation control <div className={classes.navigationControl}>
           <NavigationControl
             onViewportChange={newViewport => setViewport(newViewport)}
@@ -100,7 +118,7 @@ const Map = ({ classes }) => {
             latitude={pin.latitude}
             longitude={pin.longitude}
           >
-            <PinIcon size={40} color="darkblue" />
+            <PinIcon size={40} color={highlightNewPin(pin)} />
           </Marker>
         ))}
       </ReactMapGL>
