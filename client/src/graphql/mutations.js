@@ -22,3 +22,11 @@ export const CREATE_PIN_MUTATION = `mutation($title: String, $image: String, $co
         }
     }
 }`;
+
+export const DELETE_PIN_MUTATION = `mutation($pinID: ID!){
+    deletePin(pinID: $pinID )
+    {
+        _id
+        
+    }
+}`;

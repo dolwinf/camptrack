@@ -30,6 +30,10 @@ module.exports = {
       }).save();
       const pinAdded = await Pin.populate(newPin, "author");
       return pinAdded;
+    }),
+    deletePin: authenticated(async (root, args, ctx) => {
+      const pinDeleted = await Pin.findOneAndDelete({ _id: args.pinID }).exec();
+      return pinDeleted;
     })
   }
 };
