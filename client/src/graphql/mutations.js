@@ -30,3 +30,31 @@ export const DELETE_PIN_MUTATION = `mutation($pinID: ID!){
         
     }
 }`;
+
+//We're returning a pin from resolvers so we get all it's data which can query for
+//We need to fetch all this data because we need to update the data in state to render on the page
+export const CREATE_COMMENT_MUTATION = `mutation($pinID: ID!, $text: String!) {
+
+	createComment(pinID: $pinID, text: $text){
+        _id
+        createdAt
+        title
+        content
+        image
+        latitude
+        longitude
+        author {
+            _id
+            name
+        }
+        comments {
+            text
+            createdAt
+            author {
+                name
+                picture
+            }
+        }
+
+    }
+}`;

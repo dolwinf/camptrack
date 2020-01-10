@@ -6,17 +6,26 @@ import ListItemText from "@material-ui/core/ListItemText";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import Avatar from "@material-ui/core/Avatar";
 import Typography from "@material-ui/core/Typography";
+import distanceInWordsToNow from "date-fns/distance_in_words_to_now";
 
 const Comments = ({ comments, classes }) => (
   <List className={classes.root}>
-    {comments.map((comment, i) => (
-      <ListItem key={i} alignItems="flex-start">
-        <ListItemAvatar>
-          <Avatar src={comment.author.picture} alt={comment.author.name} />
-        </ListItemAvatar>
-        <ListItemText primary={comment.text} />
-      </ListItem>
-    ))}
+    {comments
+      ? comments.map((comment, i) => (
+          <Typography>
+            <ListItem key={i} alignItems="flex-start">
+              <ListItemAvatar>
+                <Avatar
+                  src={comment.author.picture}
+                  alt={comment.author.name}
+                />
+              </ListItemAvatar>
+              <ListItemText primary={comment.text} />{" "}
+              {distanceInWordsToNow(Number(comment.createdAt))} ago
+            </ListItem>
+          </Typography>
+        ))
+      : null}
   </List>
 );
 
